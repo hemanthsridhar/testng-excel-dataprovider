@@ -20,7 +20,7 @@ public class ExtDataProvider {
     /**
      * Sheet names with the TestNG test method names which will be fetched during runtime.
      */
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] singleExcelMultipleSheets(Method methodName) throws Exception {
         String path = getPathOfTheFile("GoogleTestData.xlsx");
         return new ExcelLibrary(path, methodName.getName()).readFromExcelDataForTestNGDataProviderWithSheetName();
@@ -29,8 +29,8 @@ public class ExtDataProvider {
     /**
      * Read data from a CSV file.
      */
-    @DataProvider
-    public Iterator<Object[]> csvDataRead() throws Exception {
+    @DataProvider(parallel = true)
+    public Object[][] csvDataRead() throws Exception {
         String path = getPathOfTheFile("random_comma_seperated_value.csv");
         return new CSVLibrary().parseCSVData(path);
     }

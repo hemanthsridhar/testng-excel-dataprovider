@@ -16,7 +16,7 @@ public class ExtTest {
     }
 
     @Test(dataProvider = "singleExcelMultipleSheets", dataProviderClass = ExtDataProvider.class)
-    public void loginTest2(String param1,String param2,String param3,String param4) {
+    public void loginTest2(String param1, String param2, String param3, String param4) {
         System.out.print(param1 + ",");
         System.out.print(param2 + ",");
         System.out.print(param3 + ",");
