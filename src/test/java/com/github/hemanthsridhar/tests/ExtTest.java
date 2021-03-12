@@ -1,5 +1,6 @@
 package com.github.hemanthsridhar.tests;
 
+import com.github.hemanthsridhar.CSVLibrary;
 import com.github.hemanthsridhar.ExcelLibrary;
 import com.github.hemanthsridhar.data.ExtDataProvider;
 import org.testng.annotations.Test;
@@ -32,6 +33,23 @@ public class ExtTest {
         System.out.println();
     }
 
+    @Test
+    public void csvGetColumnNames() throws IOException {
+        CSVLibrary csvLibrary = new CSVLibrary();
+        csvLibrary.parseCSVData("src/test/resources/random_comma_seperated_value.csv");
+        String[] columnNames = csvLibrary.getColumnNames();
+        for(String columnName : columnNames){
+            System.out.println(columnName);
+        }
+    }
+
+
+    @Test
+    public void csvGetNumberOfRows() throws IOException {
+        CSVLibrary csvLibrary = new CSVLibrary();
+        csvLibrary.parseCSVData("src/test/resources/random_comma_seperated_value.csv");
+        System.out.println("number_of_rows:"+csvLibrary.getNumberOfRows());
+    }
 
     @Test
     public void readIndividualDataFromXLSX() throws IOException {

@@ -7,21 +7,31 @@ import java.io.IOException;
 
 public class CSVLibrary {
 
-    public String[][] parseCSVData(String fileName) throws IOException {
+    private String[] columnNames;
+    private int numberOfRows;
 
-        File file = new File(fileName);
+    public String[][] parseCSVData(String filePath) throws IOException {
+
+        File file = new File(filePath);
         BufferedReader tempBuffer = new BufferedReader(new FileReader(file));
         BufferedReader input = new BufferedReader(new FileReader(file));
         String firstRow = tempBuffer.readLine();
+        setColumnNames(firstRow);
         input.readLine();
         int numberOfColumns = firstRow.split(",").length;
-        int numberOfRows = getRowSize(tempBuffer);
+        int numberOfRows = setNumberOfRows(tempBuffer);
 
         String[][] data = new String[numberOfRows][numberOfColumns];
 
         for (int i = 0; i < numberOfRows; i++) {
             String[] temp = input.readLine().split(",");
-            if (numberOfColumns >= 0) System.arraycopy(temp, 0, data[i], 0, numberOfColumns);
+            for (int j = 0; j < numberOfColumns; j++) {
+                try {
+                    data[i][j] = temp[j];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    data[i][j] = "";
+                }
+            }
         }
 
         input.close();
@@ -29,11 +39,29 @@ public class CSVLibrary {
         return data;
     }
 
-    private int getRowSize(BufferedReader input) throws IOException {
+    private int setNumberOfRows(BufferedReader input) throws IOException {
         int count = 0;
         while ((input.readLine()) != null) {
             count++;
         }
+        numberOfRows = count;
         return count;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+
+    private void setColumnNames(String firstRow) {
+        try {
+
+            columnNames = firstRow.split(",");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            columnNames[0] = firstRow;
+        }
     }
 }
