@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="verify latest version" data-provider-thread-count="20" parallel="methods" thread-count="30">
+
+    <test name="verify latest version">
+        <classes>
+            <class name="com.github.hemanthsridhar.tests.ExtTest">
+                <methods>
+                    <include name="csvRead"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
