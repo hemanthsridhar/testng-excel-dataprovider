@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <poi.version>3.15</poi.version>
+        <poi.version>3.17</poi.version>
         <compiler.src.trgt>1.8</compiler.src.trgt>
         <compiler.version>3.1</compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
