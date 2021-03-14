@@ -6,7 +6,7 @@
 
     <groupId>com.github.hemanthsridhar</groupId>
     <artifactId>testng-ext-dataprovider</artifactId>
-    <version>12.1.0-SNAPSHOT</version>
+    <version>12.1.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -19,7 +19,7 @@
     </properties>
 
     <name>testng-ext-dataprovider</name>
-    <description>TestNG data provider libraries to read from csv and excel(xlsx and xlsx)</description>
+    <description>TestNG data provider libraries to read from csv and excel(xls and xlsx)</description>
     <url>http://github.com/hemanthsridhar/testng-ext-dataprovider</url>
     <licenses>
         <license>
