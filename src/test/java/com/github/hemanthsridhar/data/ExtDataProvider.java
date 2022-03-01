@@ -1,10 +1,10 @@
 package com.github.hemanthsridhar.data;
 
-import com.github.hemanthsridhar.CSVLibrary;
-import com.github.hemanthsridhar.ExcelLibrary;
+import com.github.hemanthsridhar.ExtUtils;
+import com.github.hemanthsridhar.lib.ExtLib;
 import org.testng.annotations.DataProvider;
+
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 public class ExtDataProvider {
 
@@ -13,8 +13,8 @@ public class ExtDataProvider {
      */
     @DataProvider
     public Object[][] excelSheetDataRead(Method methodName) throws Exception {
-        String path = getPathOfTheFile(methodName.getName() + ".xlsx");
-        return new ExcelLibrary(path).readFromExcelDataForTestNGDataProvider();
+        ExtLib ext = new ExtUtils(getPathOfTheFile(methodName.getName() + ".xlsx"));
+        return ext.parseExcelData();
     }
 
     /**
@@ -22,17 +22,24 @@ public class ExtDataProvider {
      */
     @DataProvider(parallel = true)
     public Object[][] singleExcelMultipleSheets(Method methodName) throws Exception {
-        String path = getPathOfTheFile("GoogleTestData.xlsx");
-        return new ExcelLibrary(path, methodName.getName()).readFromExcelDataForTestNGDataProviderWithSheetName();
+        ExtLib ext = new ExtUtils(getPathOfTheFile("GoogleTestData.xlsx"));
+        return ext.parseExcelData(methodName.getName());
     }
 
     /**
      * Read data from a CSV file.
      */
     @DataProvider(parallel = true)
-    public Object[][] csvDataRead() throws Exception {
-        String path = getPathOfTheFile("random_comma_seperated_value.csv");
-        return new CSVLibrary().parseCSVData(path);
+    public Object[][] csvDataReadWithColumnHeaders() throws Exception {
+        ExtLib ext = new ExtUtils(getPathOfTheFile("random_comma_seperated_value.csv"));
+        return ext.parseCSVData(true);
+    }
+
+
+    @DataProvider(parallel = true)
+    public Object[][] csvDataReadWithoutColumnHeaders() throws Exception {
+        ExtLib ext = new ExtUtils(getPathOfTheFile("random_csv_no_headers.csv"));
+        return ext.parseCSVData();
     }
 
     /**

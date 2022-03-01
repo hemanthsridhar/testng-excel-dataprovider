@@ -1,35 +1,33 @@
 package com.github.hemanthsridhar;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Hashtable;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelLibrary {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
+class ExcelLibrary {
 
 
+    private final Hashtable hash = new Hashtable();
+    private final String excelSheetPath;
     //xls
     private HSSFSheet hssfwrksheet;
     private HSSFWorkbook hssfwrkbook = null;
-
     //xlsx
     private XSSFSheet xssfwrksheet;
     private XSSFWorkbook xssfwrkbook = null;
-
-
-    private Hashtable hash = new Hashtable();
-
-    private String excelSheetPath;
-
     private String sheet;
 
     public ExcelLibrary(String excelSheetPath) throws IOException {
@@ -143,7 +141,7 @@ public class ExcelLibrary {
     //Create Column Dictionary to hold all the Column Names
     //for xls
     @SuppressWarnings("unchecked")
-    public void hssfColumnDictionary(int colNum) {
+    private void hssfColumnDictionary(int colNum) {
 
         //Iterate through all the columns in the Excel sheet and store the value in Hashtable
         for (int col = 0; col < colNum; col++) {
@@ -153,7 +151,7 @@ public class ExcelLibrary {
 
     //for xlsx
     @SuppressWarnings("unchecked")
-    public void xssfColumnDictionary(int colNum) {
+    private void xssfColumnDictionary(int colNum) {
 
         //Iterate through all the columns in the Excel sheet and store the value in Hashtable
         for (int col = 0; col < colNum; col++) {
@@ -162,7 +160,7 @@ public class ExcelLibrary {
     }
 
     //Read Column Names
-    public int GetCell(String colName) {
+    private int GetCell(String colName) {
         try {
             int value;
             value = ((Integer) hash.get(colName)).intValue();
@@ -174,25 +172,33 @@ public class ExcelLibrary {
     }
 
     //for xls
-    public String hssfcellToString(HSSFCell cell) {
-        int type;
+    private String hssfcellToString(HSSFCell cell) {
+        CellType type;
         Object result;
         type = cell.getCellType();
         switch (type) {
-            case 0:
+            case NUMERIC:
                 result = cell.getNumericCellValue();
                 break;
 
-            case 1:
+            case STRING:
                 result = cell.getStringCellValue();
                 break;
 
-            case 2:
+            case FORMULA:
                 result = cell.getCellFormula();
                 break;
 
-            case 3:
+            case BLANK:
                 result = "";
+                break;
+
+            case BOOLEAN:
+                result = cell.getBooleanCellValue();
+                break;
+
+            case ERROR:
+                result = cell.getErrorCellValue();
                 break;
             default:
                 throw new RuntimeException("no support for this cell");
@@ -201,25 +207,33 @@ public class ExcelLibrary {
     }
 
     //for xlsx
-    public String xssfcellToString(XSSFCell cell) {
-        int type;
+    private String xssfcellToString(XSSFCell cell) {
+        CellType type;
         Object result;
         type = cell.getCellType();
         switch (type) {
-            case 0:
+            case NUMERIC:
                 result = cell.getNumericCellValue();
                 break;
 
-            case 1:
+            case STRING:
                 result = cell.getStringCellValue();
                 break;
 
-            case 2:
+            case FORMULA:
                 result = cell.getCellFormula();
                 break;
 
-            case 3:
+            case BLANK:
                 result = "";
+                break;
+
+            case BOOLEAN:
+                result = cell.getBooleanCellValue();
+                break;
+
+            case ERROR:
+                result = cell.getErrorCellValue();
                 break;
 
             default:
@@ -277,6 +291,22 @@ public class ExcelLibrary {
             }
         }
         return data;
+    }
+
+    public String[] xlsxColumnNames() {
+        List<String> columnNames = new ArrayList<>();
+        for (int i = 0; i < xlsxColumnCount(); i++) {
+            columnNames.add(xlsxReadCell(i, 0));
+        }
+        return columnNames.toArray(new String[0]);
+    }
+
+    public String[] xlsColumnNames() {
+        List<String> columnNames = new ArrayList<>();
+        for (int i = 0; i < xlsColumnCount(); i++) {
+            columnNames.add(xlsReadCell(i, 0));
+        }
+        return columnNames.toArray(new String[0]);
     }
 }
 

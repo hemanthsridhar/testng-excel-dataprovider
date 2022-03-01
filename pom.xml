@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.hemanthsridhar</groupId>
     <artifactId>testng-ext-dataprovider</artifactId>
-    <version>12.1.2</version>
+    <version>13.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <poi.version>3.17</poi.version>
+        <poi.version>5.2.0</poi.version>
         <compiler.src.trgt>1.8</compiler.src.trgt>
         <compiler.version>3.1</compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,11 +49,6 @@
         <dependency>
             <groupId>${project.gid}</groupId>
             <artifactId>${project.artid}-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.gid}</groupId>
-            <artifactId>${project.artid}-ooxml-schemas</artifactId>
             <version>${poi.version}</version>
         </dependency>
         <dependency>
