@@ -4,15 +4,24 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 class CSVLibrary {
 
+    private final String path;
     private String[] columnNames;
     private int numberOfRows;
 
-    public String[][] parseCSVData(String filePath) throws IOException {
+    public CSVLibrary(String path) {
+        this.path = path;
+    }
 
-        File file = new File(filePath);
+    public String[][] parseCSVData() throws IOException {
+
+        File file = new File(path);
         BufferedReader tempBuffer = new BufferedReader(new FileReader(file));
         BufferedReader input = new BufferedReader(new FileReader(file));
         String firstRow = tempBuffer.readLine();
@@ -37,9 +46,9 @@ class CSVLibrary {
         return data;
     }
 
-    public String[][] parseCSVData(String filePath, boolean hasColumnNames) throws IOException {
+    public String[][] parseCSVData(boolean hasColumnNames) throws Exception {
 
-        File file = new File(filePath);
+        File file = new File(path);
         BufferedReader tempBuffer = new BufferedReader(new FileReader(file));
         BufferedReader input = new BufferedReader(new FileReader(file));
         String firstRow = tempBuffer.readLine();
@@ -89,15 +98,60 @@ class CSVLibrary {
         }
     }
 
-    private void setColumnNames(String firstRow) {
+    private void setColumnNames(String firstRow) throws Exception {
         try {
             columnNames = firstRow.split(",");
+            if(checkDuplicateColumns(columnNames)){
+                throw new Exception("There are duplicate column names");
+            };
         } catch (ArrayIndexOutOfBoundsException e) {
             columnNames[0] = firstRow;
         }
     }
 
+    private boolean checkDuplicateColumns(String[] columnNames) {
+        Set<String> tempSet = new HashSet<>();
+        for(String columnName : columnNames){
+            if(!tempSet.add(columnName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getNumberOfColumns() {
         return columnNames.length;
+    }
+
+    public String csvReadCell(int columnNumber, int rowNumber) throws Exception {
+        if (columnNumber <= 0 || rowNumber <= 0) {
+            throw new Exception("row number or column number cannot be less than or equal to 0");
+        }
+        String[][] data = parseCSVData();
+        return data[rowNumber - 1][columnNumber - 1];
+    }
+
+    public String csvReadCell(String columnName, int rowNumber) throws Exception {
+        try {
+            Map<String, Integer> hashMap = new HashMap<>();
+            if (columnName == null) {
+                throw new Exception("column name cannot be null");
+            }
+            if (rowNumber <= 0) {
+                throw new Exception("row number cannot be 0");
+            }
+            String[][] data = parseCSVData(true);
+            String[] columnNames = getColumnNames();
+            for (int col = 0; col < getNumberOfColumns(); col++) {
+                hashMap.put(columnNames[col], col);
+            }
+            return data[rowNumber - 1][hashMap.get(columnName)];
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            throw new Exception("invalid row number");
+        }
+        catch (NullPointerException e){
+            throw new Exception("invalid column name");
+        }
     }
 }

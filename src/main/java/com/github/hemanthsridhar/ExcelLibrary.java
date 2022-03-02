@@ -13,9 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 class ExcelLibrary {
 
@@ -293,18 +291,34 @@ class ExcelLibrary {
         return data;
     }
 
-    public String[] xlsxColumnNames() {
+    public String[] xlsxColumnNames() throws Exception {
         List<String> columnNames = new ArrayList<>();
         for (int i = 0; i < xlsxColumnCount(); i++) {
             columnNames.add(xlsxReadCell(i, 0));
         }
+        if(checkDuplicateColumns(columnNames)){
+            throw new Exception("There are duplicate column names");
+        }
         return columnNames.toArray(new String[0]);
     }
 
-    public String[] xlsColumnNames() {
+    private boolean checkDuplicateColumns(List<String> columnNames) {
+        Set<String> tempSet = new HashSet<>();
+        for(String columnName : columnNames){
+            if(!tempSet.add(columnName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String[] xlsColumnNames() throws Exception {
         List<String> columnNames = new ArrayList<>();
         for (int i = 0; i < xlsColumnCount(); i++) {
             columnNames.add(xlsReadCell(i, 0));
+        }
+        if(checkDuplicateColumns(columnNames)){
+            throw new Exception("There are duplicate column names");
         }
         return columnNames.toArray(new String[0]);
     }

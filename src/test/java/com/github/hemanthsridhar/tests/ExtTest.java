@@ -1,8 +1,9 @@
 package com.github.hemanthsridhar.tests;
 
-import com.github.hemanthsridhar.ExtUtils;
+import com.github.hemanthsridhar.CSVUtils;
+import com.github.hemanthsridhar.ExcelUtils;
 import com.github.hemanthsridhar.data.ExtDataProvider;
-import com.github.hemanthsridhar.lib.ExtLib;
+import com.github.hemanthsridhar.lib.ExtUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -42,8 +43,8 @@ public class ExtTest {
 
     @Test
     public void csvGetColumnNames() throws Exception {
-        ExtLib ext = new ExtUtils("src/test/resources/random_comma_seperated_value.csv");
-        ext.parseCSVData(true);
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        ext.parseData(true);
         ext.getColumnNames();
         String[] columnNames = ext.getColumnNames();
         String[] expectedColumnNames = {"param1", "param2", "param3"};
@@ -52,49 +53,62 @@ public class ExtTest {
 
     @Test
     public void csvGetColumnNamesWithoutHasColumnNamesInParseData() throws Exception {
-        ExtLib ext = new ExtUtils("src/test/resources/random_comma_seperated_value.csv");
-        ext.parseCSVData();
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        ext.parseData();
         ext.getColumnNames();
         String[] columnNames = ext.getColumnNames();
         Assert.assertNull(columnNames);
     }
 
+    @Test
+    public void csvGetCellData() throws Exception {
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        ext.parseData();
+        Assert.assertEquals(ext.readCell(1,2),"hi");
+    }
+
+    @Test
+    public void csvGetCellDataColName() throws Exception {
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        Assert.assertEquals(ext.readCell("param3",2),"helloSECOND");
+    }
+
 
     @Test
     public void csvGetNumberOfRowsWithColumNames() throws Exception {
-        ExtLib ext = new ExtUtils("src/test/resources/random_comma_seperated_value.csv");
-        ext.parseCSVData(true);
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        ext.parseData(true);
         Assert.assertEquals(ext.getNumberOfRows(), 4);
     }
 
     @Test
     public void csvGetNumberOfRowsWithoutColumnNames() throws Exception {
-        ExtLib ext = new ExtUtils("src/test/resources/random_csv_no_headers.csv");
-        ext.parseCSVData();
+        ExtUtils ext = new CSVUtils("src/test/resources/random_csv_no_headers.csv");
+        ext.parseData();
         Assert.assertEquals(ext.getNumberOfRows(), 2);
     }
 
     @Test
     public void xlsxGetNumberOfRows() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xlsx").getPath();
-        ExtLib ext = new ExtUtils(path);
-        ext.parseExcelData("loginTest2");
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData("loginTest2");
         Assert.assertEquals(ext.getNumberOfRows(), 5);
     }
 
     @Test
     public void xlsxGetNumberOfColumns() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xlsx").getPath();
-        ExtLib ext = new ExtUtils(path);
-        ext.parseExcelData("loginTest2");
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData("loginTest2");
         Assert.assertEquals(ext.getNumberOfColumns(), 4);
     }
 
     @Test
     public void xlsxColumnNames() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xlsx").getPath();
-        ExtLib ext = new ExtUtils(path);
-        ext.parseExcelData("loginTest2");
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData("loginTest2");
         String[] expectedColumnNames = {"Test Case Id", "User Name", "Password", "Expected Name of the user"};
         Assert.assertEquals(ext.getColumnNames(), expectedColumnNames);
     }
@@ -102,35 +116,35 @@ public class ExtTest {
     @Test
     public void readIndividualDataFromXLSX() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xlsx").getPath();
-        ExtLib ext = new ExtUtils(path);
-        ext.parseExcelData("loginTest2");
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData("loginTest2");
 
-        System.out.println(ext.xlsxReadCell("Password", 2));
+        System.out.println(ext.readCell("Password", 2));
 
         //for row number and column number reading, make sure you provider 1 value less for the respective row number and the column number.
-        System.out.println(ext.xlsxReadCell(0, 2));
+        System.out.println(ext.readCell(1, 3));
 
-        ext.parseExcelData("loginTest1");
+        ext.parseData("loginTest1");
 
-        System.out.println(ext.xlsxReadCell("Password", 1));
+        System.out.println(ext.readCell("Password", 1));
         //for row number and column number reading, make sure you provider 1 value less for the respective row number and the column number.
-        System.out.println(ext.xlsxReadCell(3, 1));
+        System.out.println(ext.readCell(4, 2));
     }
 
     @Test(enabled = false)
     public void readIndividualDataFromXLS() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xls").getPath();
-        ExtLib ext = new ExtUtils(path);
-        ext.parseExcelData("loginTest2");
-        System.out.println(ext.xlsReadCell("Password", 2));
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData("loginTest2");
+        System.out.println(ext.readCell("Password", 2));
 
         //for row number and column number reading, make sure you provider 1 value less for the respective row number and the column number.
-        System.out.println(ext.xlsReadCell(0, 2));
+        System.out.println(ext.readCell(1, 2));
 
-        ext.parseExcelData("loginTest1");
+        ext.parseData("loginTest1");
 
-        System.out.println(ext.xlsReadCell("Password", 1));
+        System.out.println(ext.readCell("Password", 1));
         //for row number and column number reading, make sure you provider 1 value less for the respective row number and the column number.
-        System.out.println(ext.xlsReadCell(3, 1));
+        System.out.println(ext.readCell(4, 1));
     }
 }

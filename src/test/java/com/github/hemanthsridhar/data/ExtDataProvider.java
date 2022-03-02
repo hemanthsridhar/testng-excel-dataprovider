@@ -1,7 +1,8 @@
 package com.github.hemanthsridhar.data;
 
-import com.github.hemanthsridhar.ExtUtils;
-import com.github.hemanthsridhar.lib.ExtLib;
+import com.github.hemanthsridhar.CSVUtils;
+import com.github.hemanthsridhar.ExcelUtils;
+import com.github.hemanthsridhar.lib.ExtUtils;
 import org.testng.annotations.DataProvider;
 
 import java.lang.reflect.Method;
@@ -13,8 +14,8 @@ public class ExtDataProvider {
      */
     @DataProvider
     public Object[][] excelSheetDataRead(Method methodName) throws Exception {
-        ExtLib ext = new ExtUtils(getPathOfTheFile(methodName.getName() + ".xlsx"));
-        return ext.parseExcelData();
+        ExtUtils ext = new ExcelUtils(getPathOfTheFile(methodName.getName() + ".xlsx"));
+        return ext.parseData();
     }
 
     /**
@@ -22,8 +23,8 @@ public class ExtDataProvider {
      */
     @DataProvider(parallel = true)
     public Object[][] singleExcelMultipleSheets(Method methodName) throws Exception {
-        ExtLib ext = new ExtUtils(getPathOfTheFile("GoogleTestData.xlsx"));
-        return ext.parseExcelData(methodName.getName());
+        ExtUtils ext = new ExcelUtils(getPathOfTheFile("GoogleTestData.xlsx"));
+        return ext.parseData(methodName.getName());
     }
 
     /**
@@ -31,15 +32,15 @@ public class ExtDataProvider {
      */
     @DataProvider(parallel = true)
     public Object[][] csvDataReadWithColumnHeaders() throws Exception {
-        ExtLib ext = new ExtUtils(getPathOfTheFile("random_comma_seperated_value.csv"));
-        return ext.parseCSVData(true);
+        ExtUtils ext = new CSVUtils(getPathOfTheFile("random_comma_seperated_value.csv"));
+        return ext.parseData(true);
     }
 
 
     @DataProvider(parallel = true)
     public Object[][] csvDataReadWithoutColumnHeaders() throws Exception {
-        ExtLib ext = new ExtUtils(getPathOfTheFile("random_csv_no_headers.csv"));
-        return ext.parseCSVData();
+        ExtUtils ext = new CSVUtils(getPathOfTheFile("random_csv_no_headers.csv"));
+        return ext.parseData();
     }
 
     /**
