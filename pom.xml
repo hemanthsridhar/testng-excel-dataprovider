@@ -6,7 +6,7 @@
 
     <groupId>com.github.hemanthsridhar</groupId>
     <artifactId>testng-ext-dataprovider</artifactId>
-    <version>13.0.0</version>
+    <version>14.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
