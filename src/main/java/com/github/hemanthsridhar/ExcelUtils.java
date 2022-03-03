@@ -8,26 +8,22 @@ public class ExcelUtils implements ExtUtils {
 
     private final String path;
     private ExcelLibrary excelLibrary;
+    private String sheetName;
 
     public ExcelUtils(String path) {
         this.path = path;
+        this.sheetName = "Sheet1";
+    }
+
+    public ExcelUtils(String path, String sheetName) {
+        this.path = path;
+        this.sheetName = sheetName;
     }
 
     @Override
     public String[][] parseData() throws Exception {
-        excelLibrary = new ExcelLibrary(path);
-        return excelLibrary.readFromExcelDataForTestNGDataProvider();
-    }
-
-    @Override
-    public String[][] parseData(String sheetName) throws Exception {
         excelLibrary = new ExcelLibrary(path, sheetName);
-        return excelLibrary.readFromExcelDataForTestNGDataProviderWithSheetName();
-    }
-
-    @Override
-    public String[][] parseData(Boolean hasColumnNames) {
-        throw null;
+        return excelLibrary.readExcelData();
     }
 
     @Override
@@ -36,10 +32,10 @@ public class ExcelUtils implements ExtUtils {
             throw new Exception("row number cannot be 0");
         }
         if(path.endsWith(".xlsx")){
-            return excelLibrary.xlsxReadCell(columnName,rowNumber-1);
+            return excelLibrary.xlsxReadCell(columnName,rowNumber);
         }
         else if(path.endsWith(".xls")){
-            return excelLibrary.xlsxReadCell(columnName,rowNumber-1);
+            return excelLibrary.xlsxReadCell(columnName,rowNumber);
         }
         else{
             return null;

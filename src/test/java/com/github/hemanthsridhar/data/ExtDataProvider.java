@@ -23,8 +23,8 @@ public class ExtDataProvider {
      */
     @DataProvider(parallel = true)
     public Object[][] singleExcelMultipleSheets(Method methodName) throws Exception {
-        ExtUtils ext = new ExcelUtils(getPathOfTheFile("GoogleTestData.xlsx"));
-        return ext.parseData(methodName.getName());
+        ExtUtils ext = new ExcelUtils(getPathOfTheFile("GoogleTestData.xlsx"),methodName.getName());
+        return ext.parseData();
     }
 
     /**
@@ -32,8 +32,8 @@ public class ExtDataProvider {
      */
     @DataProvider(parallel = true)
     public Object[][] csvDataReadWithColumnHeaders() throws Exception {
-        ExtUtils ext = new CSVUtils(getPathOfTheFile("random_comma_seperated_value.csv"));
-        return ext.parseData(true);
+        ExtUtils ext = new CSVUtils(getPathOfTheFile("random_comma_seperated_value.csv"), true);
+        return ext.parseData();
     }
 
 

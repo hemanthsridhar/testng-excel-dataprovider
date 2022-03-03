@@ -242,32 +242,7 @@ class ExcelLibrary {
 
 
     //for testng dataprovider
-    public String[][] readFromExcelDataForTestNGDataProvider() throws Exception {
-        File file = new File(excelSheetPath);
-        FileInputStream fis = new FileInputStream(file);
-        xssfwrkbook = new XSSFWorkbook(fis);
-        xssfwrksheet = xssfwrkbook.getSheet("Sheet1");
-        int numberOfColumns = xlsxColumnCount();
-        int numberOfRows = xlsxRowCount();
-        String[][] data = new String[numberOfRows - 1][numberOfColumns];
-        for (int i = 1; i < numberOfRows; i++) {
-            for (int j = 0; j < numberOfColumns; j++) {
-
-                XSSFRow row = xssfwrksheet.getRow(i);
-                XSSFCell cell = row.getCell(j);
-                String val = xssfcellToString(cell);
-                data[i - 1][j] = val;
-                if (val == null) {
-                    System.out.println("data empty");
-                }
-            }
-        }
-        return data;
-
-    }
-
-    //for testng dataprovider
-    public String[][] readFromExcelDataForTestNGDataProviderWithSheetName() throws Exception {
+    public String[][] readExcelData() throws Exception {
         File file = new File(excelSheetPath);
         FileInputStream fis = new FileInputStream(file);
         xssfwrkbook = new XSSFWorkbook(fis);

@@ -14,46 +14,26 @@ class CSVLibrary {
     private final String path;
     private String[] columnNames;
     private int numberOfRows;
+    private Boolean hasColumnNames;
 
     public CSVLibrary(String path) {
         this.path = path;
+        this.hasColumnNames = false;
     }
 
-    public String[][] parseCSVData() throws IOException {
+    public CSVLibrary(String path, Boolean hasColumnNames){
+        this.path = path;
+        this.hasColumnNames = hasColumnNames;
+    }
+
+    public String[][] parseCSVData() throws Exception {
 
         File file = new File(path);
         BufferedReader tempBuffer = new BufferedReader(new FileReader(file));
         BufferedReader input = new BufferedReader(new FileReader(file));
         String firstRow = tempBuffer.readLine();
-        int numberOfColumns = firstRow.split(",").length;
-        int numberOfRows = setNumberOfRows(tempBuffer) + 1;
-
-        String[][] data = new String[numberOfRows][numberOfColumns];
-
-        for (int i = 0; i < numberOfRows; i++) {
-            String[] temp = input.readLine().split(",");
-            for (int j = 0; j < numberOfColumns; j++) {
-                try {
-                    data[i][j] = temp[j];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    data[i][j] = "";
-                }
-            }
-        }
-
-        input.close();
-        tempBuffer.close();
-        return data;
-    }
-
-    public String[][] parseCSVData(boolean hasColumnNames) throws Exception {
-
-        File file = new File(path);
-        BufferedReader tempBuffer = new BufferedReader(new FileReader(file));
-        BufferedReader input = new BufferedReader(new FileReader(file));
-        String firstRow = tempBuffer.readLine();
-        setColumnNames(firstRow);
         if (hasColumnNames) {
+            setColumnNames(firstRow);
             input.readLine();
         }
         int numberOfColumns = firstRow.split(",").length;
@@ -75,6 +55,7 @@ class CSVLibrary {
         input.close();
         tempBuffer.close();
         return data;
+
     }
 
     private int setNumberOfRows(BufferedReader input) throws IOException {
@@ -140,7 +121,8 @@ class CSVLibrary {
             if (rowNumber <= 0) {
                 throw new Exception("row number cannot be 0");
             }
-            String[][] data = parseCSVData(true);
+            this.hasColumnNames = true;
+            String[][] data = parseCSVData();
             String[] columnNames = getColumnNames();
             for (int col = 0; col < getNumberOfColumns(); col++) {
                 hashMap.put(columnNames[col], col);

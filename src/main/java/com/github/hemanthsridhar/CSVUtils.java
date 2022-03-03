@@ -12,19 +12,13 @@ public class CSVUtils implements ExtUtils {
         csvLibrary = new CSVLibrary(path);
     }
 
+    public CSVUtils(String path, Boolean hasColumnNames){
+        csvLibrary = new CSVLibrary(path, hasColumnNames);
+    }
+
     @Override
-    public String[][] parseData() throws IOException {
+    public String[][] parseData() throws Exception {
         return csvLibrary.parseCSVData();
-    }
-
-    @Override
-    public String[][] parseData(String sheetName) throws Exception {
-        throw new Exception("CSV file format does not support multiple sheets. You can save only only one sheet per file in CSV file format.");
-    }
-
-    @Override
-    public String[][] parseData(Boolean hasColumnNames) throws Exception {
-        return csvLibrary.parseCSVData(hasColumnNames);
     }
 
     @Override

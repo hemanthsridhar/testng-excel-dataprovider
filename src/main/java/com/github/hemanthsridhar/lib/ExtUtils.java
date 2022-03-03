@@ -7,10 +7,6 @@ public interface ExtUtils {
 
     String[][] parseData() throws Exception;
 
-    String[][] parseData(String sheetName) throws Exception;
-
-    String[][] parseData(Boolean hasColumnNames) throws Exception;
-
     String readCell(String columnName, int rowNumber) throws Exception;
 
     String readCell(int columnNumber, int rowNumber) throws Exception;
