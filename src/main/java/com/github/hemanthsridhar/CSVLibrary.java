@@ -15,6 +15,7 @@ class CSVLibrary {
     private String[] columnNames;
     private int numberOfRows;
     private Boolean hasColumnNames;
+    private String[][] data;
 
     public CSVLibrary(String path) {
         this.path = path;
@@ -52,10 +53,16 @@ class CSVLibrary {
             }
         }
 
+        setData(data);
+
         input.close();
         tempBuffer.close();
         return data;
 
+    }
+
+    private void setData(String[][] data) {
+        this.data = data;
     }
 
     private int setNumberOfRows(BufferedReader input) throws IOException {
@@ -108,7 +115,6 @@ class CSVLibrary {
         if (columnNumber <= 0 || rowNumber <= 0) {
             throw new Exception("row number or column number cannot be less than or equal to 0");
         }
-        String[][] data = parseCSVData();
         return data[rowNumber - 1][columnNumber - 1];
     }
 
@@ -121,8 +127,6 @@ class CSVLibrary {
             if (rowNumber <= 0) {
                 throw new Exception("row number cannot be 0");
             }
-            this.hasColumnNames = true;
-            String[][] data = parseCSVData();
             String[] columnNames = getColumnNames();
             for (int col = 0; col < getNumberOfColumns(); col++) {
                 hashMap.put(columnNames[col], col);
@@ -133,7 +137,7 @@ class CSVLibrary {
             throw new Exception("invalid row number");
         }
         catch (NullPointerException e){
-            throw new Exception("invalid column name");
+            throw new Exception("invalid column name or CSVLibrary(String path, Boolean hasColumnNames) constructor is not used.");
         }
     }
 }

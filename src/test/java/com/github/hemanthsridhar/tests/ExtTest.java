@@ -69,7 +69,8 @@ public class ExtTest {
 
     @Test
     public void csvGetCellDataColName() throws Exception {
-        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv");
+        ExtUtils ext = new CSVUtils("src/test/resources/random_comma_seperated_value.csv",true);
+        ext.parseData();
         Assert.assertEquals(ext.readCell("param3",2),"helloSECOND");
     }
 
