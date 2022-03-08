@@ -2,13 +2,11 @@ package com.github.hemanthsridhar;
 
 import com.github.hemanthsridhar.lib.ExtUtils;
 
-import java.io.IOException;
-
 public class ExcelUtils implements ExtUtils {
 
     private final String path;
     private ExcelLibrary excelLibrary;
-    private String sheetName;
+    private final String sheetName;
 
     public ExcelUtils(String path) {
         this.path = path;

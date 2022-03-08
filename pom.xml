@@ -6,7 +6,7 @@
 
     <groupId>com.github.hemanthsridhar</groupId>
     <artifactId>testng-ext-dataprovider</artifactId>
-    <version>14.2.1</version>
+    <version>14.3.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -55,6 +55,11 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
 

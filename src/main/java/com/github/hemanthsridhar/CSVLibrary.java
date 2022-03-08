@@ -4,17 +4,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-class CSVLibrary {
+class CSVLibrary extends Randomizer {
 
     private final String path;
     private String[] columnNames;
     private int numberOfRows;
-    private Boolean hasColumnNames;
+    private final Boolean hasColumnNames;
     private String[][] data;
 
     public CSVLibrary(String path) {
@@ -22,7 +24,7 @@ class CSVLibrary {
         this.hasColumnNames = false;
     }
 
-    public CSVLibrary(String path, Boolean hasColumnNames){
+    public CSVLibrary(String path, Boolean hasColumnNames) {
         this.path = path;
         this.hasColumnNames = hasColumnNames;
     }
@@ -47,6 +49,10 @@ class CSVLibrary {
             for (int j = 0; j < numberOfColumns; j++) {
                 try {
                     data[i][j] = temp[j];
+                    data[i][j] = checkIfRandomAndInvoke(data[i][j]);
+                    if(data[i][j] == null){
+                        data[i][j] = temp[j];
+                    }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     data[i][j] = "";
                 }
@@ -89,9 +95,9 @@ class CSVLibrary {
     private void setColumnNames(String firstRow) throws Exception {
         try {
             columnNames = firstRow.split(",");
-            if(checkDuplicateColumns(columnNames)){
+            if (checkDuplicateColumns(columnNames)) {
                 throw new Exception("There are duplicate column names");
-            };
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             columnNames[0] = firstRow;
         }
@@ -99,8 +105,8 @@ class CSVLibrary {
 
     private boolean checkDuplicateColumns(String[] columnNames) {
         Set<String> tempSet = new HashSet<>();
-        for(String columnName : columnNames){
-            if(!tempSet.add(columnName)){
+        for (String columnName : columnNames) {
+            if (!tempSet.add(columnName)) {
                 return true;
             }
         }
@@ -132,11 +138,9 @@ class CSVLibrary {
                 hashMap.put(columnNames[col], col);
             }
             return data[rowNumber - 1][hashMap.get(columnName)];
-        }
-        catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new Exception("invalid row number");
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new Exception("invalid column name or CSVLibrary(String path, Boolean hasColumnNames) constructor is not used.");
         }
     }

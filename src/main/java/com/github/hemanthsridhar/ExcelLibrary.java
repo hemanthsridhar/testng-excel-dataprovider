@@ -13,9 +13,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
-class ExcelLibrary {
+class ExcelLibrary extends Randomizer{
 
 
     private final Hashtable hash = new Hashtable();
@@ -28,7 +30,7 @@ class ExcelLibrary {
     private XSSFWorkbook xssfwrkbook = null;
     private String sheet;
 
-    public ExcelLibrary(String excelSheetPath) throws IOException {
+    public ExcelLibrary(String excelSheetPath) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         this.excelSheetPath = excelSheetPath;
         if (excelSheetPath.endsWith(".xls")) {//Initialize
             File file = new File(excelSheetPath);
@@ -50,7 +52,7 @@ class ExcelLibrary {
     }
 
 
-    public ExcelLibrary(String excelSheetPath, String sheet) throws IOException {
+    public ExcelLibrary(String excelSheetPath, String sheet) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         this.excelSheetPath = excelSheetPath;
         this.sheet = sheet;
         //Initialize
@@ -97,41 +99,41 @@ class ExcelLibrary {
 
     //Returns the Cell value by taking row and Column values as argument
     //for .xls
-    public String xlsReadCell(int colNum, int rowNum) {
+    public String xlsReadCell(int colNum, int rowNum) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String[][] data = new String[rowNum + 1][colNum + 1];
         HSSFRow row = hssfwrksheet.getRow(rowNum);
         HSSFCell cell = row.getCell(colNum);
         String val = hssfcellToString(cell);
         data[rowNum][colNum] = val;
-        if (val == null) {
-            System.out.println("data empty");
+        data[rowNum][colNum] = checkIfRandomAndInvoke(data[rowNum][colNum]);
+        if (data[rowNum][colNum] == null) {
+            data[rowNum][colNum] = val;
         }
-        return val;
-
+        return data[rowNum][colNum];
     }
 
     //for .xlsx
-    public String xlsxReadCell(int colNum, int rowNum) {
+    public String xlsxReadCell(int colNum, int rowNum) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String[][] data = new String[rowNum + 1][colNum + 1];
         XSSFRow row = xssfwrksheet.getRow(rowNum);
         XSSFCell cell = row.getCell(colNum);
         String val = xssfcellToString(cell);
         data[rowNum][colNum] = val;
-        if (val == null) {
-            System.out.println("data empty");
+        data[rowNum][colNum] = checkIfRandomAndInvoke(data[rowNum][colNum]);
+        if (data[rowNum][colNum] == null) {
+            data[rowNum][colNum] = val;
         }
-        return val;
-
+        return data[rowNum][colNum];
     }
 
     //for xls
-    public String xlsReadCell(String colName, int rowNumber) {
+    public String xlsReadCell(String colName, int rowNumber) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return xlsReadCell(GetCell(colName), rowNumber);
     }
 
 
     //for xlsx
-    public String xlsxReadCell(String colName, int rowNumber) {
+    public String xlsxReadCell(String colName, int rowNumber) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return xlsxReadCell(GetCell(colName), rowNumber);
     }
 
@@ -139,7 +141,7 @@ class ExcelLibrary {
     //Create Column Dictionary to hold all the Column Names
     //for xls
     @SuppressWarnings("unchecked")
-    private void hssfColumnDictionary(int colNum) {
+    private void hssfColumnDictionary(int colNum) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         //Iterate through all the columns in the Excel sheet and store the value in Hashtable
         for (int col = 0; col < colNum; col++) {
@@ -149,7 +151,7 @@ class ExcelLibrary {
 
     //for xlsx
     @SuppressWarnings("unchecked")
-    private void xssfColumnDictionary(int colNum) {
+    private void xssfColumnDictionary(int colNum) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         //Iterate through all the columns in the Excel sheet and store the value in Hashtable
         for (int col = 0; col < colNum; col++) {

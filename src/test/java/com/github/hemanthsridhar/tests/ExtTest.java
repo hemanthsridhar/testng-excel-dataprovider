@@ -90,6 +90,29 @@ public class ExtTest {
     }
 
     @Test
+    public void randomCsvData() throws Exception {
+        ExtUtils ext = new CSVUtils("src/test/resources/random_data.csv",true);
+        ext.parseData();
+        for(int i = 1 ; i < ext.getNumberOfRows(); i++) {
+            System.out.println(ext.readCell("param1", i));
+            Assert.assertNotNull(ext.readCell("param1", i));
+            Assert.assertFalse(ext.readCell("param1", i).isEmpty());
+        }
+    }
+
+    @Test
+    public void randomXLSXData() throws Exception {
+        String path = getClass().getClassLoader().getResource("RandomTestData.xlsx").getPath();
+        ExtUtils ext = new ExcelUtils(path);
+        ext.parseData();
+        for(int i = 1 ; i < ext.getNumberOfRows(); i++) {
+            System.out.println(ext.readCell("param1", i));
+            Assert.assertNotNull(ext.readCell("param1", i));
+            Assert.assertFalse(ext.readCell("param1", i).isEmpty());
+        }
+    }
+
+    @Test
     public void xlsxGetNumberOfRows() throws Exception {
         String path = getClass().getClassLoader().getResource("GoogleTestData.xlsx").getPath();
         ExtUtils ext = new ExcelUtils(path,"loginTest2");

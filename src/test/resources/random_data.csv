@@ -1,0 +1,10 @@
+param1,param2
+randomAlphabetic(10),hemanth
+randomAlphaNumeric(5),hemanth
+randomNumeric(5),hemanth
+randomAscii(5),hemanth
+randomGraph(5),hemanth
+random(5),hemanth
+randomAlphabetic(1:5),hemanth
+randomAlphaNumeric(1:50),hemanth
+randomAlphaNumeric(25),hemanth

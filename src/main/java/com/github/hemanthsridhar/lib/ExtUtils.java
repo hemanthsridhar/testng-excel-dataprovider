@@ -1,9 +1,6 @@
 package com.github.hemanthsridhar.lib;
 
-import java.io.IOException;
-
-public interface ExtUtils {
-
+public interface ExtUtils  {
 
     String[][] parseData() throws Exception;
 

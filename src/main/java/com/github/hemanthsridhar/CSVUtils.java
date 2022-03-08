@@ -2,8 +2,6 @@ package com.github.hemanthsridhar;
 
 import com.github.hemanthsridhar.lib.ExtUtils;
 
-import java.io.IOException;
-
 public class CSVUtils implements ExtUtils {
 
     private final CSVLibrary csvLibrary;
